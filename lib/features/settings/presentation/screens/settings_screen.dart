@@ -31,12 +31,14 @@ class SettingsScreen extends ConsumerWidget {
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Auto-play pronunciation'),
-                  subtitle: const Text('Speak each word automatically when shown'),
+                  subtitle:
+                      const Text('Speak each word automatically when shown'),
                   value: settings.autoPronounce,
                   onChanged: settingsNotifier.setAutoPronounce,
                 ),
                 const SizedBox(height: AppSpacing.sm),
-                const Text('Speech Rate', style: TextStyle(color: AppColors.textSecondary)),
+                const Text('Speech Rate',
+                    style: TextStyle(color: AppColors.textSecondary)),
                 Slider(
                   value: settings.speechRate,
                   min: 0.2,
@@ -73,8 +75,8 @@ class SettingsScreen extends ConsumerWidget {
                       ),
                       IconButton(
                         icon: const Icon(Icons.add_circle_outline),
-                        onPressed: () =>
-                            settingsNotifier.setDailyGoal(settings.dailyGoal + 5),
+                        onPressed: () => settingsNotifier
+                            .setDailyGoal(settings.dailyGoal + 5),
                       ),
                     ],
                   ),
@@ -129,7 +131,7 @@ class SettingsScreen extends ConsumerWidget {
                   subtitle: Text(
                     'A premium, fully offline Leitner-system flashcard app. '
                     'No account, no internet, no ads — your data never leaves '
-                    'this device.',
+                    'this device. Made by Agrin 💙',
                   ),
                 ),
               ],
@@ -140,7 +142,8 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _importFile(BuildContext context, WordListNotifier notifier) async {
+  Future<void> _importFile(
+      BuildContext context, WordListNotifier notifier) async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['json', 'csv'],
@@ -159,7 +162,9 @@ class SettingsScreen extends ConsumerWidget {
     } catch (_) {
       // Fall back to trying the other format if extension/content mismatch.
       try {
-        count = isJson ? await notifier.importCsv(content) : await notifier.importJson(content);
+        count = isJson
+            ? await notifier.importCsv(content)
+            : await notifier.importJson(content);
       } catch (_) {
         count = 0;
       }

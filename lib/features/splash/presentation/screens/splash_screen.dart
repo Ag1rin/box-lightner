@@ -60,10 +60,14 @@ class _SplashScreenState extends State<SplashScreen>
                     color: AppColors.accent,
                     borderRadius: BorderRadius.circular(AppRadius.xl),
                   ),
-                  child: const Icon(
-                    Icons.style_rounded,
-                    color: Colors.white,
-                    size: 40,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(AppRadius.xl),
+                    child: Image.asset(
+                      'assets/icon/app_icon.png',
+                      width: 84,
+                      height: 84,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
@@ -77,8 +81,11 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
                 const SizedBox(height: 4),
                 const Text(
-                  'Learn English, effortlessly',
-                  style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                  'Learn English, effortlessly, by Agrin',
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 13,
+                  ),
                 ),
               ],
             ),
