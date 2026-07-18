@@ -64,7 +64,7 @@ android {
 
             signingConfig = signingConfigs.getByName("release")
 
-            // فعال کردن کوچک‌سازی خروجی
+            
             isMinifyEnabled = true
             isShrinkResources = true
         }
