@@ -80,38 +80,74 @@ class _FlashcardScreenState extends ConsumerState<FlashcardScreen> {
                     ),
                     const SizedBox(height: AppSpacing.xl),
                     Expanded(
-                      child: GestureDetector(
-                        onHorizontalDragUpdate: (details) {
-                          setState(() => _dragOffsetX += details.delta.dx);
-                        },
-                        onHorizontalDragEnd: (details) {
-                          final threshold = MediaQuery.of(context).size.width * 0.25;
-                          if (_dragOffsetX.abs() > threshold) {
-                            final wasCorrect = _dragOffsetX > 0;
-                            _answer(wasCorrect);
-                          }
-                          setState(() => _dragOffsetX = 0);
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 150),
-                          transform: Matrix4.translationValues(_dragOffsetX, 0, 0)
-                            ..rotateZ(_dragOffsetX / 800),
-                          transformAlignment: Alignment.center,
-                          child: FlipCard(
-                            isFlipped: session.isFlipped,
-                            onTap: () =>
-                                ref.read(reviewSessionProvider.notifier).flip(),
-                            front: _CardFace(
-                              child: _FrontContent(
-                                word: current!,
-                                onReplay: () => ref.read(ttsServiceProvider).speak(
-                                      current.english,
-                                      rate: settings.speechRate,
+                      child: Center(
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: GestureDetector(
+                            onHorizontalDragUpdate: (details) {
+                              setState(() => _dragOffsetX += details.delta.dx);
+                            },
+                            onHorizontalDragEnd: (details) {
+                              final threshold =
+                                  MediaQuery.of(context).size.width * 0.25;
+                              if (_dragOffsetX.abs() > threshold) {
+                                final wasCorrect = _dragOffsetX > 0;
+                                _answer(wasCorrect);
+                              }
+                              setState(() => _dragOffsetX = 0);
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 150),
+                              transform:
+                                  Matrix4.translationValues(_dragOffsetX, 0, 0)
+                                    ..rotateZ(_dragOffsetX / 800),
+                              transformAlignment: Alignment.center,
+                              // AnimatedSwitcher gives each word its own
+                              // FlipCard instance (keyed by word id). That
+                              // means a new card always starts flat on its
+                              // front face and simply fades/scales in,
+                              // instead of reverse-animating the old card's
+                              // flip — which used to let the *next* word's
+                              // Persian meaning flash on screen for a
+                              // fraction of a second mid-rotation.
+                              child: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 260),
+                                switchInCurve: Curves.easeOut,
+                                switchOutCurve: Curves.easeIn,
+                                transitionBuilder: (child, animation) {
+                                  final scale = Tween<double>(
+                                    begin: 0.96,
+                                    end: 1,
+                                  ).animate(animation);
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: ScaleTransition(
+                                      scale: scale,
+                                      child: child,
                                     ),
+                                  );
+                                },
+                                child: FlipCard(
+                                  key: ValueKey(current!.id),
+                                  isFlipped: session.isFlipped,
+                                  onTap: () => ref
+                                      .read(reviewSessionProvider.notifier)
+                                      .flip(),
+                                  front: _CardFace(
+                                    child: _FrontContent(
+                                      word: current,
+                                      onReplay: () =>
+                                          ref.read(ttsServiceProvider).speak(
+                                                current.english,
+                                                rate: settings.speechRate,
+                                              ),
+                                    ),
+                                  ),
+                                  back: _CardFace(
+                                    child: _BackContent(word: current),
+                                  ),
+                                ),
                               ),
-                            ),
-                            back: _CardFace(
-                              child: _BackContent(word: current),
                             ),
                           ),
                         ),
