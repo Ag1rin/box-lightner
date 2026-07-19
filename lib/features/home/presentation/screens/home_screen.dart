@@ -230,6 +230,11 @@ class HomeScreen extends ConsumerWidget {
                           label: 'Search',
                           onTap: () => context.push('/search'),
                         ),
+                        QuickActionButton(
+                          icon: Icons.timer
+                        , label: 'Timer' ,
+                          onTap: ,
+                         ),
                       ],
                     ),
                   ],
