@@ -73,70 +73,99 @@ class HomeScreen extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(AppRadius.xl),
                     border: Border.all(color: AppColors.border),
                   ),
-                  child: Row(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      ProgressRing(
-                        progress: progress,
-                        size: 108,
-                        strokeWidth: 10,
-                        center: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              '${stats.todayReviews}',
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              '/ $goal',
-                              style: const TextStyle(
-                                color: AppColors.textTertiary,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: AppSpacing.lg),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Today's Progress",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.xs),
-                            Text(
-                              dueWords.isEmpty
-                                  ? 'All caught up. Nice work!'
-                                  : '${dueWords.length} cards due today',
-                              style: const TextStyle(
-                                color: AppColors.textSecondary,
-                                fontSize: 13,
-                              ),
-                            ),
-                            const SizedBox(height: AppSpacing.sm),
-                            Row(
+                      Row(
+                        children: [
+                          ProgressRing(
+                            progress: progress,
+                            size: 108,
+                            strokeWidth: 10,
+                            center: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.local_fire_department_rounded,
-                                    color: AppColors.warning, size: 18),
-                                const SizedBox(width: 4),
                                 Text(
-                                  '${stats.streaks.current} day streak',
+                                  '${stats.todayReviews}',
                                   style: const TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                Text(
+                                  '/ $goal',
+                                  style: const TextStyle(
+                                    color: AppColors.textTertiary,
+                                    fontSize: 12,
                                   ),
                                 ),
                               ],
                             ),
-                          ],
+                          ),
+                          const SizedBox(width: AppSpacing.lg),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Today's Review",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const SizedBox(height: AppSpacing.xs),
+                                Text(
+                                  dueWords.isEmpty
+                                      ? 'All caught up. Nice work!'
+                                      : 'You have ${dueWords.length} word'
+                                          '${dueWords.length == 1 ? '' : 's'} '
+                                          'to review today.',
+                                  style: const TextStyle(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                const SizedBox(height: AppSpacing.sm),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                        Icons.local_fire_department_rounded,
+                                        color: AppColors.warning,
+                                        size: 18),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      '${stats.streaks.current} day streak',
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: ElevatedButton.icon(
+                          onPressed: dueWords.isEmpty
+                              ? null
+                              : () => context.push('/review'),
+                          icon: Icon(
+                            dueWords.isEmpty
+                                ? Icons.check_circle_outline_rounded
+                                : Icons.play_circle_fill_rounded,
+                          ),
+                          label: Text(
+                            dueWords.isEmpty
+                                ? 'Nothing to review'
+                                : 'Start Review (${dueWords.length})',
+                          ),
                         ),
                       ),
                     ],
@@ -186,13 +215,6 @@ class HomeScreen extends ConsumerWidget {
                       crossAxisSpacing: AppSpacing.md,
                       childAspectRatio: 1.5,
                       children: [
-                        QuickActionButton(
-                          icon: Icons.play_circle_fill_rounded,
-                          label: 'Start Review',
-                          onTap: dueWords.isEmpty
-                              ? () {}
-                              : () => context.push('/review'),
-                        ),
                         QuickActionButton(
                           icon: Icons.add_circle_outline_rounded,
                           label: 'Add Word',

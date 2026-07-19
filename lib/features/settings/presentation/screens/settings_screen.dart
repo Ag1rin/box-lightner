@@ -122,6 +122,71 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const SizedBox(height: AppSpacing.lg),
             const _SectionCard(
+              title: 'Privacy',
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: AppSpacing.sm),
+                  child: Text(
+                    'Lightner runs fully offline. We do not collect, store, '
+                    'or share any of your personal data — there is nothing '
+                    'to protect because nothing ever leaves your device.',
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      height: 1.5,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.wifi_off_rounded, color: AppColors.success),
+                  title: Text('No internet access required'),
+                  subtitle: Text(
+                    'The app works completely offline. It never connects '
+                    'to any server.',
+                  ),
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.storage_rounded, color: AppColors.success),
+                  title: Text('Everything stays on your device'),
+                  subtitle: Text(
+                    'Your words and review history are stored locally in '
+                    'this app\'s private storage, not in any cloud.',
+                  ),
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.no_accounts_rounded, color: AppColors.success),
+                  title: Text('No account, no analytics, no ads'),
+                  subtitle: Text(
+                    'No sign-up, no tracking, no third-party SDKs collecting '
+                    'usage data.',
+                  ),
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.perm_device_information_rounded,
+                      color: AppColors.success),
+                  title: Text('No hidden permissions'),
+                  subtitle: Text(
+                    'The app does not access your contacts, location, '
+                    'camera, microphone, or any other data it doesn\'t need.',
+                  ),
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.ios_share_rounded, color: AppColors.success),
+                  title: Text('You control your data'),
+                  subtitle: Text(
+                    'Exporting, importing, or resetting progress above only '
+                    'happens when you choose to — nothing is sent anywhere.',
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            const _SectionCard(
               title: 'About',
               children: [
                 ListTile(
