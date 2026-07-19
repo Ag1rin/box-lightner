@@ -33,10 +33,11 @@ class NotificationService {
       android: android,
     );
 
-    await _notifications.initialize(settings);
+    await _notifications.initialize(settings: settings);
 
-    final androidPlugin = _notifications.resolvePlatformSpecificImplementation;
-    AndroidFlutterLocalNotificationsPlugin();
+    final androidPlugin = _notifications
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
 
     await androidPlugin?.requestNotificationsPermission();
     await androidPlugin?.requestExactAlarmsPermission();
@@ -63,11 +64,11 @@ class NotificationService {
     }
 
     await _notifications.zonedSchedule(
-      1,
-      "Reminder",
-      "Time to review!😁",
-      scheduled,
-      const NotificationDetails(
+      id: 1,
+      title: 'Reminder',
+      body: 'Time to review!😁',
+      scheduledDate: scheduled,
+      notificationDetails: const NotificationDetails(
         android: AndroidNotificationDetails(
           'daily_reminder',
           'Daily Reminder',
@@ -82,6 +83,6 @@ class NotificationService {
   }
 
   Future<void> cancelDaily() async {
-    await _notifications.cancel(1);
+    await _notifications.cancel(id: 1);
   }
 }
