@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -14,6 +15,16 @@ class NotificationService {
   Future<void> initialize() async {
     tz.initializeTimeZones();
 
+    // tz.local defaults to UTC unless we explicitly tell it the device's
+    // real timezone — without this, scheduled times are wrong for anyone
+    // not in UTC.
+    try {
+      final deviceTimezone = await FlutterTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(deviceTimezone));
+    } catch (_) {
+      // Fall back to UTC if the platform lookup fails for any reason.
+    }
+
     const android = AndroidInitializationSettings(
       '@mipmap/ic_launcher',
     );
@@ -24,10 +35,12 @@ class NotificationService {
 
     await _notifications.initialize(settings);
 
-    await _notifications
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestNotificationsPermission();
+    final androidPlugin = _notifications
+        .resolvePlatformSpecificImplementation
+            AndroidFlutterLocalNotificationsPlugin>();
+
+    await androidPlugin?.requestNotificationsPermission();
+    await androidPlugin?.requestExactAlarmsPermission();
   }
 
   Future<void> scheduleDaily({

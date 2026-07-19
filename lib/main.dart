@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
+import 'features/notification/notification_service.dart';
 import 'features/settings/presentation/providers/settings_providers.dart';
 import 'features/word/data/review_history_model.dart';
 import 'features/word/data/word_model.dart';
@@ -12,6 +13,8 @@ import 'routing/app_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await NotificationService.instance.initialize();
 
   await Hive.initFlutter();
   Hive.registerAdapter(WordAdapter());

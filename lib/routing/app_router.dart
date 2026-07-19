@@ -7,6 +7,7 @@ import '../features/search/presentation/screens/search_screen.dart';
 import '../features/settings/presentation/screens/settings_screen.dart';
 import '../features/splash/presentation/screens/splash_screen.dart';
 import '../features/statistics/presentation/screens/statistics_screen.dart';
+import '../features/timer/timer_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -38,6 +39,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/settings',
       builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: '/timer',
+      builder: (context, state) => const TimerScreen(),
     ),
   ],
 );
